@@ -1,5 +1,5 @@
 //rakenduse paketid
-const  express = require ('express') //lisame Expressi raamistiku
+const  express = require ('express'); //lisame Expressi raamistiku
 const app = express() //loome Expressi rakenduse
 
 const path = require ('path')
@@ -9,7 +9,7 @@ const hbs = require("express-handlebars");
 
 // Seadistame mallimootori kataloogi ja faililaiendid
 app.set ('views', path.join(__dirname, 'views')); // Määrame mallide asukoha
-app.set('view engime', 'hbs'); //Määrame vaadete kasutatava mallimootori (hbs)
+app.set('view engine', 'hbs'); //Määrame vaadete kasutatava mallimootori (hbs)
 
 //Seadistame Handlebarsi mallimootori
 app.engine('hbs', hbs.engine({
@@ -18,19 +18,18 @@ app.engine('hbs', hbs.engine({
     layoutsDir: __dirname + '/views/layouts/',// Paigutuste kataloogi asukoht
 }))
 
-//Määrame avaliku kataloogi sisu kättesaadavaks static sisuks
-app.use(express.static('public'));
 
+app.use(express.static('public'));
 
 // Lisame MySQL andmebaasiga ühenduse loomiseks paketi
 const mysql = require('mysql')
 
-const bodyParser = require ('body-parser')
+const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({extended: true}))
 
 
 //db osad
-var con = mysql.createConnection({
+let con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "qwerty",
@@ -42,6 +41,18 @@ con.connect(function (err){
     console.log("Connected to joga_mysql db");
 })
 
-app.listen(3000, () =>{
-    console.log("App is started at http://localhost:3000")
+//kuvab pildid
+app.get('/',(req,res)=> {
+    let query = "SELECT*FROM article";
+    let articles = []
+    con.query(query,(err, result) => {
+        if (err) throw err;
+        articles = result
+        res.render('index',{
+            articles:articles
+        })
+    })
+});
+app.listen(3000, () => {
+    console.log(`App is started at http://localhost:3000`)
 })
