@@ -18,11 +18,17 @@ app.engine('hbs', hbs.engine({
     layoutsDir: __dirname + '/views/layouts/',// Paigutuste kataloogi asukoht
 }))
 
+//Määrame avaliku kataloogi sisu kättesaadavaks static sisuks
+app.use(express.static('public'));
+
+
 // Lisame MySQL andmebaasiga ühenduse loomiseks paketi
 const mysql = require('mysql')
 
 const bodyParser = require ('body-parser')
 app.use(bodyParser.urlencoded({extended: true}))
+
+
 //db osad
 var con = mysql.createConnection({
     host: "localhost",
