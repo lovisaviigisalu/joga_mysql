@@ -53,6 +53,7 @@ app.get('/',(req,res)=> {
         })
     })
 });
+//kuvab sellele artikli sisu
 app.get('/article/:slug',(req, res) =>{
     let query =`SELECT * FROM article WHERE slug="${req.params.slug}"`
     let article
