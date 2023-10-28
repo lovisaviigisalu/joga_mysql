@@ -1,0 +1,21 @@
+<!--Kuvab kuvab autori nime -->
+{{#author}}
+    <h1>Articles by {{name}}</h1>
+{{/author}}
+<!--autori kirjutatud artiklite loend-->
+<div class="article-list">
+    {{#articles}}
+        <article>
+            <!--Artikli pildi kuvamine, mis on link artiklile siis-->
+            <a href="/article/{{slug}}">
+                <img src="/images/{{image}}" alt="">
+            </a>
+            <!--artikli pealkirja kuvamine, mis on ka link artiklile-->
+            <h2>
+                <a href="/article/{{slug}}">
+                    {{name}}
+                </a>
+            </h2>
+        </article>
+    {{/articles}}
+</div>
