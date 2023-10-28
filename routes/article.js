@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Impordime artikli kontrolleri ja ekspordime selle selle faili kasutamiseks.
+// Impordime artikli kontrolleri ja ekspordime selle selle faili kasutamiseks(articleController).
 const articleController = require ('../Controllers/article');
 
 // Määrame ruuteri, mis reageerib päringule, kui kasutaja külastab alamlehte '/'. See kasutab artikli kontrollerit ja käivitab funktsiooni "getAllArticles".
