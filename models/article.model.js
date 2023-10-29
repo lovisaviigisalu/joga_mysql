@@ -8,6 +8,7 @@ const Article = (article) => {
     this.body = article.body
     this.published = article.published
     this.author_id = article.author_id
+    this.author_name = article.author_name
 }
 //saame koik artiklid
 Article.getAll = (result)=>{
