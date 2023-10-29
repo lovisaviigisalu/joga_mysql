@@ -1,14 +1,13 @@
 //db ühendus
 const con = require('../utils/db')
-
-const Article = (article) => {
+const Author = require('./author.model')
+const Article = function(article){
     this.name = article.name
     this.slug = article.slug
     this.image = article.image
     this.body = article.body
     this.published = article.published
     this.author_id = article.author_id
-    this.author_name = article.author_name
 }
 //saame koik artiklid
 Article.getAll = (result)=>{
@@ -42,6 +41,24 @@ Article.getBySlug = (slug, result) => {
     }
 })
 };
+Article.createNew = (newArticle, result) => {
+        let query = `INSERT INTO article 
+    (name, slug, image, body, published, author_id) 
+    VALUES 
+    ("${newArticle.name}", "${newArticle.slug}", "${newArticle.image}", 
+    "${newArticle.body}", "${newArticle.published}", "${newArticle.author_id}")`;
+
+        con.query(query, (err, res) => {
+            if (err) {
+                console.error('Error creating a new article:', err);
+                result(err, null);
+                return;
+            }
+            console.log('Created article:', { id: res.insertId, ...newArticle });
+            result(null, { id: res.insertId, ...newArticle });
+        });
+    };
+
 
 
 module.exports = Article;

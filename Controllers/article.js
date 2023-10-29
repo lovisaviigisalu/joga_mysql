@@ -31,7 +31,48 @@ const getArticleBySlug = (req, res) =>{
         }
     })
 }
+//create new article
+const createNewArticle = (req, res) => {
+    // New article from POST data (example from form)
+    console.log('Creating a new article');
+
+    const newArticle = {
+        name: req.body.name,
+        slug: req.body.slug,
+        image: req.body.image,
+        body: req.body.body,
+        published: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        author_id: req.body.author_id,
+    };
+
+    Article.createNew(newArticle, (err, data) => {
+        if (err) {
+            console.error('Error creating a new article:', err);
+            res.status(500).send({
+                message: err.message || 'Some error occurred while creating the article',
+            });
+        } else {
+            console.log('Created article:', data);
+            res.redirect('/'); // Assuming you want to redirect to the newly created article's page
+        }
+    });
+};
+//naita artikli formi
+const showNewArticleForm = (req, res) =>{
+    res.render('create_article')
+}
+/*const getEditArticleForm = (req, res) => {
+    const articleId = req.params.id;
+
+}
+const updateArticle = (req, res) =>{
+
+}*/
 module.exports = {
     getAllArticles,
-    getArticleBySlug
+    getArticleBySlug,
+    createNewArticle,
+    showNewArticleForm,
+    /*getEditArticleForm,
+    updateArticle*/
 }

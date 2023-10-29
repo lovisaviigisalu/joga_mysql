@@ -6,7 +6,7 @@ const path = require ('path')
 
 //lisame mallimootori
 const hbs = require("express-handlebars");
-
+app.use(express.urlencoded({extended: true}))
 // Seadistame mallimootori kataloogi ja faililaiendid
 app.set ('views', path.join(__dirname, 'views')); // Määrame mallide asukoha
 app.set('view engine', 'hbs'); //Määrame vaadete kasutatava mallimootori (hbs)
