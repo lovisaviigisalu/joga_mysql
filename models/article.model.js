@@ -1,6 +1,6 @@
 //db ühendus
 const con = require('../utils/db')
-const Author = require('./author.model')
+
 const Article = function(article){
     this.name = article.name
     this.slug = article.slug
@@ -58,7 +58,63 @@ Article.createNew = (newArticle, result) => {
             result(null, { id: res.insertId, ...newArticle });
         });
     };
+Article.showArticle = (articleId, result) => {
+    let articleQuery = `SELECT article.*, author.name AS authorName FROM article INNER JOIN author ON article.author_id = author.id WHERE article.id = "${articleId}"`;
+
+    con.query(articleQuery, (err, res) => {
+        if (err) {
+            console.log('error: ', err);
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            // Assuming the query should return only one result
+            console.log('found article: ', res[0]);
+            result(null, res[0]);
+        } else {
+            result({ message: 'Article not found' }, null);
+        }
+    });
+};
+
+Article.editArticle = (articleId, updatedArticleData, result) => {
+    Article.showArticle(articleId, (err, article) => {
+        if (err) {
+            return result(err, null);
+        }
+    updatedArticleData.author_id = article.author_id;
+    const query = `
+        UPDATE article
+        SET
+            name = "${updatedArticleData.name}",
+            slug = "${updatedArticleData.slug}",
+            image = "${updatedArticleData.image}",
+            body = "${updatedArticleData.body}",
+            author_id = "${updatedArticleData.author_id}",
+            published = NOW()  -- Optionally update the published date
+        WHERE id = "${articleId}"
+    `;
+
+    con.query(query, (err, res) => {
+        if (err) {
+            console.log('error: ', err);
+            result(err, null);
+            return;
+        }
+
+        if (res.affectedRows === 0) {
+            // Article not found
+            result({ message: 'Article not found' }, null);
+            return;
+        }
+
+        console.log('updated article: ', { id: articleId, ...updatedArticleData });
+        result(null, { id: articleId, ...updatedArticleData });
+    });
+});
 
 
 
+}
 module.exports = Article;

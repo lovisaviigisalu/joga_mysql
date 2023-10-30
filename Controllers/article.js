@@ -3,7 +3,7 @@ const Article = require('../models/article.model')
 const getAllArticles = (req,res)=> {
     Article.getAll((err, data) => {
         if (err) {
-            res.status(500).sent({
+            res.status(500).send({
                 message : err.message || 'Some error occured retrieving articles data'
             })
         }else {
@@ -61,18 +61,51 @@ const createNewArticle = (req, res) => {
 const showNewArticleForm = (req, res) =>{
     res.render('create_article')
 }
-/*const getEditArticleForm = (req, res) => {
+
+const getEditArticleForm = (req, res) => {
     const articleId = req.params.id;
 
-}
-const updateArticle = (req, res) =>{
+    Article.showArticle(articleId, (err, article, authors) => {
+        if (err) {
+            return res.status(500).send('Error fetching article or author data');
+        }
 
-}*/
+        res.render('edit_article', { article, authors });
+    });
+};
+
+// Handle the form submission for updating an article
+const updateArticle = (req, res) => {
+    const articleId = req.params.id;
+    const updatedArticleData = {
+        name: req.body.name,
+        slug: req.body.slug, // You may need to generate a unique slug here
+        image: req.body.image,
+        body: req.body.body,
+        author_id: req.body.author_id,
+        // ... (other article properties)
+    };
+
+    Article.editArticle(articleId, updatedArticleData, (err, updatedArticle) => {
+        if (err) {
+            return res.status(500).send('Error updating article data');
+        }
+
+        res.redirect(`/article/${updatedArticle.slug}`);
+    });
+};
+
+
+
+
+
+
 module.exports = {
     getAllArticles,
     getArticleBySlug,
     createNewArticle,
     showNewArticleForm,
-    /*getEditArticleForm,
-    updateArticle*/
+    getEditArticleForm,
+    updateArticle
+
 }

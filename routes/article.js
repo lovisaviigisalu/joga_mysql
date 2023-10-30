@@ -12,8 +12,8 @@ router.get('/', articleController.getAllArticles);
 router.get('/article/:slug', articleController.getArticleBySlug);
 router.get('/create', articleController.showNewArticleForm);
 router.post('/create', articleController.createNewArticle);
-/*router.get('/edit/:id', articleController.getEditArticleForm);
-router.post('/edit/:id', articleController.updateArticle);*/
+router.get('/edit/:id', articleController.getEditArticleForm);
+router.post('/edit/:id', articleController.updateArticle);
 
 // Ekspordime artikli ruuteri , et seda saaks kasutada rakenduse failis.
 module.exports = router;
