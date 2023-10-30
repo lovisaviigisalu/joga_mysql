@@ -25,3 +25,12 @@
 
     <button>Update</button>
 </form>
+<h1>Delete article</h1>
+<p>If you want to remove this article, use the button below</p>
+{{#article}}
+        <form method="post" action="/article/edit/{{id}}">
+            <input type="hidden" name="action" value="delete">
+            <button class="danger">Delete</button>
+        </form>
+{{/article}}
+

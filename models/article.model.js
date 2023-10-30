@@ -114,6 +114,26 @@ Article.editArticle = (articleId, updatedArticleData, result) => {
     });
 });
 
+    Article.deleteArticle = (articleId, result) => {
+        const query = `DELETE FROM article WHERE id = "${articleId}"`;
+
+        con.query(query, (err, res) => {
+            if (err) {
+                console.log('error: ', err);
+                result(err, null);
+                return;
+            }
+
+            if (res.affectedRows === 0) {
+                // Article not found
+                result({ message: 'Article not found' }, null);
+                return;
+            }
+
+            console.log('deleted article with id: ', articleId);
+            result(null, { id: articleId, message: 'Article deleted' });
+        });
+    };
 
 
 }
